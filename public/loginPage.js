@@ -3,23 +3,20 @@
 const userForm = new UserForm();
 userForm.loginFormCallback = function (data) {
     ApiConnector.login(data, response => {
-        if (response.success === true) {
+        if (response.success) {
             location.reload();
         } else {
-            this.setLoginErrorMessage(JSON.stringify(response.error));
+            this.setLoginErrorMessage(response.error);
         }
     })
 }
 
 userForm.registerFormCallback = function (data) {
     ApiConnector.register(data, response => {
-        if (response.userId) {
-            this.setRegisterErrorMessage(`Пользователь с логином ${data.login} успешно зарегистрирован`);
-            setTimeout(() => {
-                location.reload()
-            }, 3000);
+        if (response.success) {
+                location.reload();
         } else {
-            this.setRegisterErrorMessage(`Пользователь с логином ${data.login} уже зарегистрирован`);
+            this.setRegisterErrorMessage(response.error);
         }
     })
 }
